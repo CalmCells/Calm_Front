@@ -26,7 +26,7 @@ from BrightCheck_DB import image_brightness
 from Movement_DB import euclidean_distance
 
 
-app = Flask(__name__, static_folder="./templates/static")
+app = Flask(__name__, static_folder="./static")
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app)
 

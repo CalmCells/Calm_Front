@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Results</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .results-container {
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+        }
+        
+        .results-header {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .results-item {
+            font-size: 20px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        
+        .results-item-label {
+            font-weight: bold;
+        }
+        
+        .calm-metrics {
+            margin-top: 40px;
+        }
+        
+        .calm-features {
+            margin-top: 40px;
+        }
+        
+        ul {
+            list-style-type: none;
+        }
+        
+        li {
+            margin-left: 20px;
+        }
+        
+        .stress-score-scale {
+            display: flex;
+            align-items: center;
+        }
+        
+        .stress-score-scale-bar {
+            width: 300px;
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #4287f5, #ffffff, #ff4f4f);
+        }
+        
+        .stress-score-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin-left: 10px;
+        }
+        
+        .stress-level-scale {
+            display: flex;
+            align-items: center;
+        }
+        
+        .stress-level-scale-bar {
+            width: 300px;
+            height: 20px;
+            border-radius: 10px;
+            background-color: transparent;
+        }
+        
+        .stress-level-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin-left: 10px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="results-container">
+        <div class="results-header">Results</div>
+
+        {% if stress_score is not none %}
+
+        <div class="results-item">
+            <span class="results-item-label">Stress Score:</span> {{ stress_score }}
+
+            <div class="stress-score-scale">
+                <div class="stress-score-scale-bar"></div>
+                <div class="stress-score-scale-labels">
+                    <span>-2</span>
+                    <span>0</span>
+                    <span>+2</span>
+                </div>
+            </div>
+
+
+        </div>
+
+        {% endif %} {% if stress_level is not none %}
+
+        <div class="results-item">
+            <span class="results-item-label">Stress Level:</span> {{ stress_level }}
+
+            <div class="stress-level-scale">
+                <div class="stress-level-scale-bar"></div>
+                <div class="stress-level-scale-labels">
+
+                    <span>😢</span>
+                    <span>😐</span>
+                    <span>🙂</span>
+                    <span>😊</span>
+                </div>
+            </div>
+
+
+        </div>
+
+        {% endif %} {% if calm_metrics %}
+
+        <div class="calm-metrics">
+            <div class="results-item-label">Calm Metrics:</div>
+            <ul>
+                {% for metric in calm_metrics %}
+                <li>{{ metric }}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        {% endif %} {% if calm_features %}
+
+        <div class="calm-features">
+            <div class="results-item-label">Calm Features:</div>
+            <ul>
+                {% for feature in calm_features %}
+                <li>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+</body>
+
+</html>

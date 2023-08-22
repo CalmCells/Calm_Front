@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Face Detection</title>
+  <style>
+    /* CSS styling for the canvas and camera feed */
+      .main-container {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          padding: 10px;
+          text-align:center;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          align-items:center;
+      }
+      .top-navigation{
+          margin-bottom:25px;
+      }
+      .top-navigation-mainpart{
+          text-align:center;
+      }
+      .arrow-back{
+          position:absolute;
+          top:5%;
+          left:5%;
+      }
+      .arrow-back:hover{
+          color:lightgray;
+          cursor:pointer;
+      }
+      h1 {
+          color: #000;
+          font-family: Noto Sans;
+          font-size: 32px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+      }
+      .video-instructions {
+          color: #A0A9FC;
+          font-family: Kumbh Sans;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 24px; /* 150% */
+      }
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    #processedVideo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-55%, -50%);
+      border-radius: 1%;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .face-image {
+          display: flex;
+          width: 393px;
+          height: 484px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          flex-shrink: 0;
+          border-radius: 55px 55px 135px 135px;
+          mix-blend-mode: luminosity;
+          margin-bottom:25px;
+    }
+    .video {
+      width: 192px; /* Set the desired width of the image */
+      height: 240px; /* Set the desired height of the image */
+      border-radius:100%; /* Apply a border radius of 50% to create an oval shape */
+      overflow: hidden; /* Hide any content outside the oval shape */
+      position: fixed; /* Position the element relative to the browser window */
+      top: 44%; /* Position the element vertically at 50% from the top */
+      left: 55%; /* Position the element horizontally at 50% from the left */
+      transform: translate(-60%, -50%); /* Center the element using translation */
+    }
+     /*Checkboxes CSS Starts*/
+
+      .custom-checkbox {
+          position: relative;
+          padding-left: 30px;
+          cursor: pointer;
+          font-size: 16px;
+          user-select: none;
+      }
+      label{
+          margin: 5px;
+      }
+
+      .custom-checkbox input {
+              position: absolute;
+              opacity: 0;
+              cursor: pointer;
+      }
+
+      .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 20px;
+          width: 20px;
+          background-color: #eee;
+          border-radius: 4px;
+      }
+
+      .custom-checkbox input:checked ~ .checkmark {
+          background-color: #2f9e44;
+      }
+
+      .checkmark:after {
+          content: "\2713"; /* Unicode character for a checkmark */
+          position: absolute;
+          display: none;
+          left: 6px;
+          top: 1px;
+          color: white;
+      }
+
+      .custom-checkbox input:checked ~ .checkmark:after {
+          display: block;
+      }
+
+      .custom-checkbox:hover .checkmark {
+          background-color: #ccc;
+      }
+      /*Checkboxes CSS Ends*/
+
+      .btn {
+          border-radius: 10px;
+          background: #5E6DFF;
+          display: flex;
+          width: 250px;
+          padding: 9px 16px;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          color:white;  
+          margin-top:5px;
+          border:none;
+          
+      }
+    #timer {
+      position: absolute;
+      top: 5px;
+      left: 28%;
+      font-size: 30px;
+      color: blue;
+      color:red;
+      font-size:22px;
+      font-weight:bold;
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    }
+    .error-message {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      font-size: 24px;
+      color: red;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+
+<body>
+    <!-- Main Container Starts -->
+    <div class="main-container">
+        <div class="top-navigation">
+            <div class="top-navigation-mainpart">
+            <img class="arrow-back" src="./static/leftArrow.svg" alt="arrow-back" />
+            <h1>Stress Level Detector</h1>
+            </div>
+            <div class="video-instructions">Keep your face stable and near the camera</div>
+            <div class="video-instructions" id="brightnessMessage">Checking your brightness conditions, stay in a well light place</div>
+        </div>
+
+
+        <canvas id="canvas"></canvas> <!-- Add the canvas element -->
+        <img class="face-image" src="./static/faceImage.png" alt="canvas-image" />
+        <div class='video'>
+            <!-- Processed video feed -->
+            <img id="processedVideo" alt="Processed Video">
+        </div>
+
+        <!--Checkboxex Starts-->
+        <label class="custom-checkbox" for="evenCheckbox1">
+            <input type="checkbox" id="evenCheckbox1">
+            <span class="checkmark"></span>
+            Your Brightness Check
+        </label>
+
+        <label class="custom-checkbox" for="evenCheckbox2">
+            <input type="checkbox" id="evenCheckbox2">
+            <span class="checkmark"></span>
+            Your Movement Check
+        </label>
+        <!--Checkboxes Ends-->
+
+        <button class="btn" id="startRecordingBtn" onclick="startRecording()" disabled>START RECORDING</button>
+        <button class="btn" id="restartRecordingBtn" onclick="restartRecording()" style="display: none;">RESTART RECORDING</button>
+        <button class="btn" id="testButton">CLICK ME</button>
+
+        <div class="error-message"></div> <!-- Add a div to display error messages -->
+        <div id="timer" style="display: none;"></div>
+        <div id="message" style="display: none;"></div>
+        <!-- Add a div to display brightness messages -->
+
+    </div>
+    <!--Main Contaienr Ends-->
+
+    <script>
+
+        function buttonClicked() {
+            console.log("yoyooy")
+            alert("Button clicked!");
+        }
+        document.getElementById("testButton").addEventListener("click", buttonClicked);
+
+        var video = document.getElementById('processedVideo');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Variables to keep track of time elapsed and recording state
+        let timeElapsed = 0;
+        let isRecording = true;
+        let timerRunning = false; // Variable to track if the timer is already running
+        let redirectTimeout; // Store the timeout ID to be able to clear it
+
+        function showMessage(message) {
+            var messageElement = document.getElementById('message');
+            messageElement.style.display = 'block';
+            messageElement.innerHTML = message;
+
+            // Hide the message after 5 seconds
+            setTimeout(function () {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // Function to update time elapsed
+        function updateTimeElapsed() {
+            if (isRecording) {
+                timeElapsed += 1;
+            }
+        }
+
+        function pauseTimerAndRecording() {
+            hideTimer();
+            document.getElementById('evenCheckbox1').checked = false;
+            document.getElementById('evenCheckbox2').checked = false;
+            clearTimeout(redirectTimeout); // Clear the timer if it's running
+            isRecording = false; // Pause the recording
+        }
+
+        // Function to resume the timer and recording
+        function resumeTimerAndRecording() {
+            showTimer(25);
+            document.getElementById('evenCheckbox1').checked = true;
+            document.getElementById('evenCheckbox2').checked = true;
+            timerRunning = true; // Set the flag to indicate the timer is running
+            isRecording = true; // Resume the recording
+            redirectTimeout = setTimeout(function () {
+                window.location.href = '/results'; // Redirect to the results page
+            }, 25000);
+        }
+
+
+
+        // Start tracking time elapsed
+        const interval = 1000; // 1 second interval (in milliseconds)
+        setInterval(updateTimeElapsed, interval);
+
+        // Function to show the timer on the screen
+        function showTimer(seconds) {
+            var timerElement = document.getElementById('timer');
+            timerElement.style.display = 'block';
+            timerElement.innerHTML = 'Timer: ' + seconds + ' seconds';
+
+            if (seconds > 0) {
+                redirectTimeout = setTimeout(function () {
+                    showTimer(seconds - 1);
+                }, 1000);
+            } else {
+                timerElement.style.display = 'none';
+                timerElement.innerHTML = ''; // Clear the timer text when the countdown is done
+                timerRunning = false; // Reset the timerRunning flag when the countdown is done
+                redirectToResults(); // Call the function to redirect to the results page
+            }
+        }
+
+        // Function to hide the timer on the screen
+        function hideTimer() {
+            var timerElement = document.getElementById('timer');
+            timerElement.style.display = 'none';
+            timerElement.innerHTML = '';
+            timerRunning = false; // Reset the timerRunning flag when hiding the timer
+            clearTimeout(redirectTimeout); // Clear the timer if it's running
+        }
+
+        // Function to redirect to the results page
+        function redirectToResults() {
+            window.location.href = '/results'; // Redirect to the results page
+        }
+
+        var socket = io.connect(
+            window.location.protocol + "//" + document.domain + ":" + location.port
+        );
+
+        var isBrightnessOk = false; // Global flag for brightness check result
+
+        // Function to calculate pixel brightness
+        function pixelBrightness(pixel) {
+            if (pixel.length !== 4) {
+                throw new Error("Pixel must have 4 values (r, g, b, a)");
+            }
+            const [r, g, b, a] = pixel;
+            const t = Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+            return t;
+        }
+
+        // Function to calculate image brightness
+        function imageBrightness(imgData) {
+            const numPixels = imgData.length / 4;
+            let sum = 0;
+            for (let i = 0; i < imgData.length; i += 4) {
+                const pixel = imgData.slice(i, i + 4);
+                sum += pixelBrightness(pixel);
+            }
+            return sum / numPixels;
+        }
+
+
+
+
+
+        function initializeCamera() {
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices
+                    .getUserMedia({ video: true })
+                    .then(function (stream) {
+                        var video = document.createElement("video");
+                        video.srcObject = stream;
+                        video.play();
+
+                        const canvas = document.createElement("canvas");
+                        const context = canvas.getContext("2d");
+                        canvas.width = 400;
+                        canvas.height = 300;
+
+                        setInterval(() => {
+                            context.drawImage(video, 0, 0, 400, 300);
+                            var imgData = context.getImageData(0, 0, 400, 300).data; // Get pixel data
+                            var imgBright = imageBrightness(imgData); // Calculate image brightness
+
+                            //   console.log("----------------imgBrigh",imgBright );
+
+
+                            if (imgBright > 100) {
+                                isBrightnessOk = true;
+                            } else {
+                                isBrightnessOk = false;
+
+                            }
+
+
+
+
+
+
+                            var data = canvas.toDataURL("image/jpeg", 0.5);
+                            socket.emit("image", data);
+                            socket.emit("current_time", timeElapsed);
+                        }, 1000 / 10); // Sending 10 frames per second
+                    })
+                    .catch(function (err) {
+                        console.error("Error accessing the camera: ", err);
+                    });
+            } else {
+                console.error("getUserMedia is not supported on this browser.");
+            }
+
+
+        }
+
+
+        initializeCamera();
+
+        console.log("camera called")
+        socket.on("processed_image", function (image) {
+            document.getElementById("processedVideo").setAttribute("src", image);
+        });
+
+
+
+        var isMotionProper = false;
+        var LightingProperFlag = false;
+
+        socket.on('data', handledata);
+
+        function handledata(data) {
+
+            isMotionProper = data.motion;
+            isLightingProper = isBrightnessOk;
+
+            console.log("This is Motion data", isMotionProper)
+            console.log("this is light data", isLightingProper)
+
+
+
+
+            if (timeElapsed > 4) {
+                if (isLightingProper) {
+                    document.getElementById('evenCheckbox1').checked = true;
+                    LightingProperFlag = true;
+                    document.getElementById('startRecordingBtn').disabled = false;
+
+                    console.log("the start recording button has been enabled")
+                    document.getElementById('startRecordingBtn').style.color = 'black';
+                    document.getElementById('startRecordingBtn').innerText = 'Start recording';
+                    //   document.getElementById('restartRecordingBtn').style.display = 'none'; // Hide the restart button
+
+                } else if (!isLightingProper) {
+                    hideTimer()
+
+                    document.getElementById('evenCheckbox1').checked = false;
+                    LightingProperFlag = false;
+                    document.getElementById('startRecordingBtn').disabled = true;
+                    console.log("the start recording button has been disenabled")
+                    document.getElementById('startRecordingBtn').style.display = 'none';
+                    document.getElementById('restartRecordingBtn').style.display = 'inline-block';
+                    document.querySelector('.error-message').innerHTML = 'Brightness not proper, go to a better place.'; // Display the message
+                }
+
+
+                if (isMotionProper) {
+                    var errorMessageElement = document.querySelector('.error-message');
+                    errorMessageElement.style.display = 'none';
+                    document.getElementById('evenCheckbox2').checked = true;
+                }
+
+                else if (!isMotionProper) {
+
+                    hideTimer()
+
+                    document.getElementById('evenCheckbox2').checked = false;
+                    document.getElementById('startRecordingBtn').disabled = true;
+                    console.log("the start recording button has been disenabled")
+                    document.getElementById('startRecordingBtn').style.display = 'none';
+                    document.getElementById('restartRecordingBtn').style.display = 'inline-block';
+                    var errorMessageElement = document.querySelector('.error-message');
+                    errorMessageElement.style.display = 'block';
+                    errorMessageElement.innerHTML = 'Too much movement, please stay stable.';
+                }
+
+
+            }
+
+        }
+
+
+        function startRecording() {
+            showTimer(25);
+        }
+
+        // console.log("start recording")
+
+        // if (isMotionProper) {
+        //     var errorMessageElement = document.querySelector('.error-message');
+        //     errorMessageElement.style.display = 'none';
+        //     document.getElementById('evenCheckbox2').checked = true;
+        //   }
+
+        //   else if(!isMotionProper) {
+        //     document.getElementById('evenCheckbox2').checked = false;
+        //     var errorMessageElement = document.querySelector('.error-message');
+        //     errorMessageElement.style.display = 'block';
+        //     errorMessageElement.innerHTML = 'Too much movement, please stay stable.';
+        //   }
+
+
+        // }
+
+
+
+        function restartRecording() {
+
+            var errorMessageElement = document.querySelector('.error-message');
+            errorMessageElement.style.display = 'none';
+
+            location.reload(); // Refresh the page
+        }
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+

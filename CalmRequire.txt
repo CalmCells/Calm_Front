@@ -8,7 +8,6 @@ colorama==0.4.6
 colour-science==0.4.1
 contourpy==1.1.0
 cycler==0.11.0
-dlib==19.24.2
 dnspython==2.4.0
 eventlet==0.33.3
 exceptiongroup==1.1.2
