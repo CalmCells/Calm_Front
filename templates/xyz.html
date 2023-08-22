@@ -5,21 +5,27 @@
 
   <title>Face Detection</title>
   <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
     /* CSS styling for the canvas and camera feed */
       .main-container {
+          height:120vh;
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           padding: 10px;
-          text-align:center;
-          display:flex;
-          flex-direction:column;
-          justify-content:center;
-          align-items:center;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-family: 'Roboto', sans-serif;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+          background-color: #ffffff;
       }
       .top-navigation{
           margin-bottom:25px;
+          margin-top:40px;
       }
       .top-navigation-mainpart{
           text-align:center;
@@ -35,7 +41,6 @@
       }
       h1 {
           color: #000;
-          font-family: Noto Sans;
           font-size: 32px;
           font-style: normal;
           font-weight: 700;
@@ -68,8 +73,8 @@
     }
     .face-image {
           display: flex;
-          width: 393px;
-          height: 484px;
+          width: 250px;
+          height: 300px;
           flex-direction: column;
           justify-content: center;
           align-items: center;
@@ -79,13 +84,13 @@
           margin-bottom:25px;
     }
     .video {
-      width: 192px; /* Set the desired width of the image */
-      height: 240px; /* Set the desired height of the image */
+      width: 120px; /* Set the desired width of the image */
+      height: 150px; /* Set the desired height of the image */
       border-radius:100%; /* Apply a border radius of 50% to create an oval shape */
       overflow: hidden; /* Hide any content outside the oval shape */
       position: fixed; /* Position the element relative to the browser window */
-      top: 44%; /* Position the element vertically at 50% from the top */
-      left: 55%; /* Position the element horizontally at 50% from the left */
+      top: 48%; /* Position the element vertically at 50% from the top */
+      left: 53%; /* Position the element horizontally at 50% from the left */
       transform: translate(-60%, -50%); /* Center the element using translation */
     }
      /*Checkboxes CSS Starts*/
@@ -151,26 +156,83 @@
           color:white;  
           margin-top:5px;
           border:none;
+          font-weight:bold;
           
       }
-    #timer {
-      position: absolute;
-      top: 5px;
-      left: 28%;
-      font-size: 30px;
-      color: blue;
-      color:red;
-      font-size:22px;
-      font-weight:bold;
-      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
-    }
-    .error-message {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      font-size: 24px;
-      color: red;
-    }
+      .btn:hover{
+          cursor:pointer;
+          font-size:15px;
+      }
+      #timer {
+          background-color: white;
+          color: #0ca678;
+          border: 10px solid #0ca678;
+          height: 360px;
+          width: 360px;
+          border-radius: 100%;
+          padding: 50px;    
+          position: absolute;
+          top: 20%;
+          font-size: 70px;
+          font-weight: 900;
+          font-family: 'Nunito', sans-serif;
+      }
+      .error-message {
+          background-color: #ffc9c9;
+          width: 300px;
+          height: 30px;
+          text-align: center;
+          padding:8px 0 0 0;
+          color: white;
+          border: 1px solid #f03e3e;
+          border-radius: 5px;
+          margin-top: -500px;
+          margin-left: 900px;
+          position:fixed;
+      }
+      @media screen and (max-width:361px) {
+          .video {
+              top: 56%;
+              left: 54%;
+              width: 120px; /* Set the desired width of the image */
+              height: 140px;
+          }
+      }
+      @media screen and (max-width:500px) {
+          .video {
+              top: 52%;
+              left: 54%;
+              width: 120px; /* Set the desired width of the image */
+              height: 140px;
+          }
+      }
+      @media screen and (max-width:650px) {
+          .video {
+              top: 50%;
+              left: 54%;
+              width: 120px; /* Set the desired width of the image */
+              height: 140px;
+          }
+      }
+      @media screen and (max-width:900px) {
+          .video {
+              top: 53%;
+              left: 54%;
+              width: 120px; /* Set the desired width of the image */
+              height: 142px;
+          }
+          #timer {
+              height: 240px;
+              width: 240px;
+              font-size: 60px;
+              top: 28%;
+          }
+          .error-message {
+              margin-top: -690px;
+              margin-left: 10px;
+          }
+      }
+
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
@@ -178,17 +240,18 @@
 
 <body>
     <!-- Main Container Starts -->
-    <div class="main-container">
+    <div class="main-container"
+         <!--Main Heading and Instructions-->
         <div class="top-navigation">
             <div class="top-navigation-mainpart">
-            <img class="arrow-back" src="./static/leftArrow.svg" alt="arrow-back" />
-            <h1>Stress Level Detector</h1>
+                <img class="arrow-back" src="./static/leftArrow.svg" alt="arrow-back" />
+                <h1>Stress Level Detector</h1>
             </div>
             <div class="video-instructions">Keep your face stable and near the camera</div>
             <div class="video-instructions" id="brightnessMessage">Checking your brightness conditions, stay in a well light place</div>
         </div>
 
-
+        <!--Image and Video-->
         <canvas id="canvas"></canvas> <!-- Add the canvas element -->
         <img class="face-image" src="./static/faceImage.png" alt="canvas-image" />
         <div class='video'>
@@ -209,15 +272,17 @@
             Your Movement Check
         </label>
         <!--Checkboxes Ends-->
-
+        <!--Start Recording and Restart Recording Buttons-->
         <button class="btn" id="startRecordingBtn" onclick="startRecording()" disabled>START RECORDING</button>
         <button class="btn" id="restartRecordingBtn" onclick="restartRecording()" style="display: none;">RESTART RECORDING</button>
         <button class="btn" id="testButton">CLICK ME</button>
 
-        <div class="error-message"></div> <!-- Add a div to display error messages -->
+        <!-- Add a div to display error messages -->
+        <div class="error-message"></div>
+        <!--Timer-->
         <div id="timer" style="display: none;"></div>
-        <div id="message" style="display: none;"></div>
         <!-- Add a div to display brightness messages -->
+        <div id="message" style="display: none;"></div>
 
     </div>
     <!--Main Contaienr Ends-->
@@ -291,7 +356,7 @@
         function showTimer(seconds) {
             var timerElement = document.getElementById('timer');
             timerElement.style.display = 'block';
-            timerElement.innerHTML = 'Timer: ' + seconds + ' seconds';
+            timerElement.innerHTML = seconds + ' seconds';
 
             if (seconds > 0) {
                 redirectTimeout = setTimeout(function () {
@@ -432,8 +497,8 @@
                     document.getElementById('startRecordingBtn').disabled = false;
 
                     console.log("the start recording button has been enabled")
-                    document.getElementById('startRecordingBtn').style.color = 'black';
-                    document.getElementById('startRecordingBtn').innerText = 'Start recording';
+                    document.getElementById('startRecordingBtn').style.color = '#38d9a9';
+                    document.getElementById('startRecordingBtn').innerText = 'START RECORDING';
                     //   document.getElementById('restartRecordingBtn').style.display = 'none'; // Hide the restart button
 
                 } else if (!isLightingProper) {
