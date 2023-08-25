@@ -22,11 +22,10 @@
             align-items: center;
             font-family: 'Roboto', sans-serif;
             /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);*/
-            background-color: #ffffff;
         }
 
         .top-navigation {
-            margin-bottom: 16px;
+            margin-bottom: 60px;
             margin-top: 40px;
         }
 
@@ -40,10 +39,10 @@
             left: 5%;
         }
 
-            .arrow-back:hover {
-                color: lightgray;
-                cursor: pointer;
-            }
+        .arrow-back:hover {
+            color: lightgray;
+            cursor: pointer;
+        }
 
         h1 {
             color: #000;
@@ -106,34 +105,117 @@
             transform: translate(-60%, -50%); /* Center the element using translation */
             border: 10px solid gray;
         }
-        /*Checkboxes CSS Starts*/
-
-        .custom-checkbox {
-            position: relative;
-            padding-left: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            user-select: none;
+        /*Checkboxes CSS starts*/
+        .all-checkboxes{
+            position:absolute;
+            width:300px;
+            height:80px;
+            height:80px;
+            top: 72%;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:10px;
+        }
+        /*Brightness Checkbox*/
+        .brightness-check-button {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height: 30%;
+            width:100%;
+            margin-left:40px;
         }
 
-        label {
-            margin: 5px;
+        .brightness-bulb-container {
+            position: absolute;
+            height: 50px;
+            width: 45px;
+            /*top: calc(50% - -200px);*/
+            left:16%;
+          
+        }
+
+        .brightness-checkbox {
+            appearance: none;
+            position: absolute;
+            display: block;
+            height: 25px;
+            width: 25px;
+            background-color: #d0d5f4;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            top:14px;
+        }
+        
+        .brightness-checkbox-label {
+            position: absolute;
+            height: 18px;
+            width: 13px;
+            background-color: #08475e;
+            border-radius: 0 0 20px 20px;
+            transform: translate(-50%, -50%);
+            left: 49.5%;
+            /*top: calc(50% + -12px);*/
+            bottom:-2px;
+            background: linear-gradient(#08475e 50%, #05303d 50%);
+            cursor: pointer;
+        }
+
+        .brightness-checkbox-label:before {
+            content: "";
+            height: 4px;
+            width: 4px;
+            background-color: #05303d;
+            bottom: -2px;
+            margin: auto;
+            left: 0;
+            right: 0;
+            border-radius: 50%;
+        }
+
+        .brightness-checkbox:checked {
+            background-color: #ffd845;
+        }
+
+        .brightness-checkbox:checked:before {
+             background-color: #ff8e00;
+        }
+
+        .brightness-checkbox:checked:after {
+             border: 6px solid #ff8e00;
+        }
+        /*Movement Checkbox*/
+        .custom-checkbox {
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;  
+            height:30%;
+            width:100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .custom-checkbox label {
+            margin-left:20px;
         }
 
         .custom-checkbox input {
-            position: absolute;
             opacity: 0;
             cursor: pointer;
+            margin-right:0;
         }
 
         .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
             height: 20px;
             width: 20px;
             background-color: #eee;
             border-radius: 4px;
+            margin-right:10px;
         }
 
         .custom-checkbox input:checked ~ .checkmark {
@@ -142,10 +224,7 @@
 
         .checkmark:after {
             content: "\2713"; /* Unicode character for a checkmark */
-            position: absolute;
             display: none;
-            left: 6px;
-            top: 1px;
             color: white;
         }
 
@@ -156,7 +235,7 @@
         .custom-checkbox:hover .checkmark {
             background-color: #ccc;
         }
-        /*Checkboxes CSS Ends*/
+        /*Checkboxes CSS ends*/
 
         .btn {
             border-radius: 10em;
@@ -184,21 +263,79 @@
              color: white;
          }
 
+
+        /*Time CSS starts*/
+
         #timer {
-            background-color: white;
-            color: #0ca678;
-            border: 10px solid #0ca678;
-            height: 360px;
-            width: 360px;
-            border-radius: 100%;
-            padding: 50px;
             position: absolute;
-            top: 20%;
-            font-size: 70px;
-            font-weight: 900;
-            font-family: 'Nunito', sans-serif;
+            top: 28%;
+        }
+        .base-timer {
+            position: relative;
+            width: 320px;
+            height: 320px;
         }
 
+        .base-timer__svg {
+            transform: scaleX(-1);
+        }
+
+        .base-timer__circle {
+            fill: none;
+            stroke: none;
+        }
+
+        .base-timer__path-elapsed {
+            stroke-width: 7px;
+            stroke: grey;
+        }
+
+        .base-timer__path-remaining {
+            stroke-width: 7px;
+            stroke-linecap: round;
+            transform: rotate(90deg);
+            transform-origin: center;
+            transition: 1s linear all;
+            fill-rule: nonzero;
+            stroke: currentColor;
+        }
+
+        .base-timer__path-remaining.green {
+            color: rgb(65, 184, 131);
+        }
+
+        .base-timer__path-remaining.orange {
+            color: orange;
+        }
+
+        .base-timer__path-remaining.red {
+            color: red;
+        }
+
+        .base-timer__label {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: fixed;
+            bottom: 10px;
+            top: 190px;
+            left:180px;
+            color: #303133;
+            background-color:white;
+            padding:2px;
+            border-radius:20px;
+            font-family: Montserrat;
+            border:1px solid green;
+        }
+
+        /*Timer CSS ends*/
+
+        /*Error message CSS starts*/
         .error-box {
             width: 300px;
             height: 90px;
@@ -242,6 +379,8 @@
             width: 25px;
         }
 
+        /*Error messages CSS ends*/
+
         @media screen and (max-width:361px) {
             .video {
                 top: 56%;
@@ -283,6 +422,37 @@
                 font-size: 60px;
                 top: 28%;
             }
+            .error-box {
+                width: 100vw;
+                height: 40px;
+                display:flex;
+                align-items:center;
+                padding:0;
+            
+            }
+            .main-error-message {
+                margin-top: -586px;
+                margin-left: 0px;
+            }
+            .main-brightness-error{
+                margin-top:-678px;
+                margin-left:0;
+            }
+            .main-brightness-error-inner{
+                margin:0;
+            }
+            .base-timer{
+                height:265px;
+                width:265px;
+                top:43%;
+                right:8%;
+            }
+            .base-timer__label {
+                top:337px;
+                left: 120px;
+                width:80px;
+                height:40px;
+            }
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -305,23 +475,32 @@
         <!--Image and Video-->
         <canvas id="canvas"></canvas> <!-- Add the canvas element -->
         <img class="face-image" style="visibility:hidden;" src="./static/faceImage10.jpg" alt="canvas-image" />
+
         <div class='video'>
             <!-- Processed video feed -->
             <img id="processedVideo" alt="Processed Video">
         </div>
 
         <!--Checkboxex Starts-->
-        <label class="custom-checkbox" for="evenCheckbox1">
-            <input type="checkbox" id="evenCheckbox1">
-            <span class="checkmark"></span>
-            Your Brightness Check
-        </label>
+        <div class="all-checkboxes">
 
+        <!--Brightness Checkbox-->
+        <div class="brightness-check-button">
+            <div class="brightness-bulb-container">
+                <input id="evenCheckbox1" class="brightness-checkbox" type="checkbox" />
+                <label class="brightness-checkbox-label" for="evenCheckbox-1"></label>
+            </div>
+            <span>Your Brightness Check</span>
+        </div>
+        
+        <!--Movement Checkbox-->
         <label class="custom-checkbox" for="evenCheckbox2">
             <input type="checkbox" id="evenCheckbox2">
             <span class="checkmark"></span>
-            Your Movement Check
+            <span>Your Movement Check</span>
+            
         </label>
+        </div>
         <!--Checkboxes Ends-->
         <!--Start Recording and Restart Recording Buttons-->
         <button class="btn" id="startRecordingBtn" onclick="startRecording()">START RECORDING</button>
@@ -337,7 +516,7 @@
 
             </div>
         </div>
-        <div class="error-message alert alert-danger" style="display:none;"></div>
+
         <!--Timer-->
         <div id="timer" style="display: none;"></div>
 
@@ -350,8 +529,6 @@
 
             </div>
         </div>
-        <!--<div class="brightness-error" id="message" style="display:none;"></div> -->
-
     </div>
     <!--Main Contaienr Ends-->
 
@@ -366,8 +543,11 @@
         var video = document.getElementById('processedVideo');
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
+
         let startRecordingButton = document.getElementById('startRecordingBtn');
+        // To disable the start Recording button after starting the recording...
         startRecordingButton.addEventListener('click', () => {
+            console.log("bhavya tiwari");
             startRecordingButton.style.opacity = '0.6';
             startRecordingButton.addEventListener('mouseover', () => {
             startRecordingButton.style.cursor = 'not-allowed';
@@ -403,25 +583,26 @@
             }
         }
 
-        function pauseTimerAndRecording() {
-            hideTimer();
-            document.getElementById('evenCheckbox1').checked = false;
-            document.getElementById('evenCheckbox2').checked = false;
-            clearTimeout(redirectTimeout); // Clear the timer if it's running
-            isRecording = false; // Pause the recording
-        }
+        //function pauseTimerAndRecording() {
+          //  hideTimer();
+            //document.getElementById('evenCheckbox1').checked = false;
+            //document.getElementById('evenCheckbox2').checked = false;
+            //clearTimeout(redirectTimeout); // Clear the timer if it's running
+            //onTimesUp();
+            //isRecording = false; // Pause the recording
+        //}
 
         // Function to resume the timer and recording
-        function resumeTimerAndRecording() {
-            showTimer(25);
-            document.getElementById('evenCheckbox1').checked = true;
-            document.getElementById('evenCheckbox2').checked = true;
-            timerRunning = true; // Set the flag to indicate the timer is running
-            isRecording = true; // Resume the recording
-            redirectTimeout = setTimeout(function () {
-                window.location.href = '/results'; // Redirect to the results page
-            }, 25000);
-        }
+        //function resumeTimerAndRecording() {
+          //  showTimer(25);
+            //document.getElementById('evenCheckbox1').checked = true;
+            //document.getElementById('evenCheckbox2').checked = true;
+            //timerRunning = true; // Set the flag to indicate the timer is running
+            //isRecording = true; // Resume the recording
+            //redirectTimeout = setTimeout(function () {
+              //  window.location.href = '/results'; // Redirect to the results page
+            //}, 25000);
+        //}
 
 
 
@@ -430,31 +611,32 @@
         setInterval(updateTimeElapsed, interval);
 
         // Function to show the timer on the screen
-        function showTimer(seconds) {
-            var timerElement = document.getElementById('timer');
-            timerElement.style.display = 'block';
-            timerElement.innerHTML = seconds + ' seconds';
+        //function showTimer(seconds) {
+          //  var timerElement = document.getElementById('timer');
+          //  timerElement.style.display = 'block';
+            //timerElement.innerHTML = seconds + ' seconds';
 
-            if (seconds > 0) {
-                redirectTimeout = setTimeout(function () {
-                    showTimer(seconds - 1);
-                }, 1000);
-            } else {
-                timerElement.style.display = 'none';
-                timerElement.innerHTML = ''; // Clear the timer text when the countdown is done
-                timerRunning = false; // Reset the timerRunning flag when the countdown is done
-                redirectToResults(); // Call the function to redirect to the results page
-            }
-        }
+            //if (seconds > 0) {
+              //  redirectTimeout = setTimeout(function () {
+                //    showTimer(seconds - 1);
+                //}, 1000);
+            //} else {
+              //  timerElement.style.display = 'none';
+                //timerElement.innerHTML = ''; // Clear the timer text when the countdown is done
+                //timerRunning = false; // Reset the timerRunning flag when the countdown is done
+                //redirectToResults(); // Call the function to redirect to the results page
+            //}
+        //}
 
         // Function to hide the timer on the screen
-        function hideTimer() {
-            var timerElement = document.getElementById('timer');
-            timerElement.style.display = 'none';
-            timerElement.innerHTML = '';
-            timerRunning = false; // Reset the timerRunning flag when hiding the timer
-            clearTimeout(redirectTimeout); // Clear the timer if it's running
-        }
+        //function hideTimer() {
+          //  var timerElement = document.getElementById('timer');
+            //timerElement.style.display = 'none';
+            //timerElement.innerHTML = '';
+            //timerRunning = false; // Reset the timerRunning flag when hiding the timer
+            //clearTimeout(redirectTimeout); // Clear the timer if it's running
+            //onTimesUp();
+        //}
 
         // Function to redirect to the results page
         function redirectToResults() {
@@ -649,12 +831,9 @@
             }
 
         }
-
-
-
-        function startRecording() {
-            showTimer(25);
-        }
+        //function startRecording() {
+           // showTimer(25);
+        //}
 
         // console.log("start recording")
 
@@ -674,8 +853,6 @@
 
         // }
 
-
-
         function restartRecording() {
 
             var errorMessageElement = document.querySelector('.error-message');
@@ -685,10 +862,163 @@
         }
 
 
+        //Timer Code Starts
+        const FULL_DASH_ARRAY = 283;
+        const WARNING_THRESHOLD = 10;
+        const ALERT_THRESHOLD = 5;
+
+        const COLOR_CODES = {
+            info: {
+                color: "green"
+            },
+            warning: {
+                color: "orange",
+                threshold: WARNING_THRESHOLD
+            },
+            alert: {
+                color: "red",
+                threshold: ALERT_THRESHOLD
+            }
+        };
+
+        const TIME_LIMIT = 25;
+        let timePassed = 0;
+        let timeLeft = TIME_LIMIT;
+        //let redirectTimeout = null;
+        let remainingPathColor = COLOR_CODES.info.color;
+
+        function setInnerContentOfTimer() {
+            document.getElementById("timer").innerHTML = `
+    <div class="base-timer">
+      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g class="base-timer__circle">
+          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+          <path
+            id="base-timer-path-remaining"
+            stroke-dasharray="283"
+            class="base-timer__path-remaining ${remainingPathColor}"
+            d="
+              M 50, 50
+              m -45, 0
+              a 45,45 0 1,0 90,0
+              a 45,45 0 1,0 -90,0
+            "
+          ></path>
+        </g>
+      </svg>
+      <span id="base-timer-label" class="base-timer__label">${formatTime(
+                timeLeft
+            )}</span>
+    </div>
+    `;
+        }
 
 
+        function startRecording() {
+            startTimer();
+        }
+        function onTimesUp() {
+            clearInterval(redirectTimeout);
+        }
 
+        function startTimer() {
+            var timerElement = document.getElementById('timer');
+            timerElement.style.display = 'block';
+            setInnerContentOfTimer();
+            redirectTimeout = setInterval(() => {
+                timePassed = timePassed += 1;
+                timeLeft = TIME_LIMIT - timePassed;
+                document.getElementById("base-timer-label").innerHTML = formatTime(
+                    timeLeft
+                );
+                setCircleDasharray();
+                setRemainingPathColor(timeLeft);
 
+                if (timeLeft === 0) {
+                    onTimesUp();
+                    let timerElement = document.getElementById('timer');
+                    timerElement.style.display = 'none';
+                    timerElement.innerHTML = ''; // Clear the timer text when the countdown is done
+                       timerRunning = false; // Reset the timerRunning flag when the countdown is done
+                       redirectToResults(); // Call the function to redirect to the results page
+                }
+            }, 1000);
+        }
+
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+
+            if (seconds < 10) {
+                seconds = `0${seconds}`;
+            }
+
+            return `${minutes}:${seconds}`;
+        }
+
+        function setRemainingPathColor(timeLeft) {
+            const { alert, warning, info } = COLOR_CODES;
+            if (timeLeft <= alert.threshold) {
+                document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.remove(warning.color);
+                document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.add(alert.color);
+            } else if (timeLeft <= warning.threshold) {
+                document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.remove(info.color);
+                document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.add(warning.color);
+            }
+        }
+
+        function calculateTimeFraction() {
+            const rawTimeFraction = timeLeft / TIME_LIMIT;
+            return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
+        }
+
+        function setCircleDasharray() {
+            const circleDasharray = `${(
+                calculateTimeFraction() * FULL_DASH_ARRAY
+            ).toFixed(0)} 283`;
+            document
+                .getElementById("base-timer-path-remaining")
+                .setAttribute("stroke-dasharray", circleDasharray);
+        }
+
+        function pauseTimerAndRecording() {
+            hideTimer();
+            document.getElementById('evenCheckbox1').checked = false;
+            document.getElementById('evenCheckbox2').checked = false;
+            clearTimeout(redirectTimeout); // Clear the timer if it's running
+            //onTimesUp();
+            isRecording = false; // Pause the recording
+        }
+
+        // Function to resume the timer and recording
+        function resumeTimerAndRecording() {
+            showTimer(25);
+            document.getElementById('evenCheckbox1').checked = true;
+            document.getElementById('evenCheckbox2').checked = true;
+            timerRunning = true; // Set the flag to indicate the timer is running
+            isRecording = true; // Resume the recording
+            redirectTimeout = setTimeout(function () {
+                window.location.href = '/results'; // Redirect to the results page
+            }, 25000);
+        }
+
+        function hideTimer() {
+            var timerElement = document.getElementById('timer');
+            timerElement.style.display = 'none';
+            timerElement.innerHTML = '';
+            timerRunning = false; // Reset the timerRunning flag when hiding the timer
+            //clearTimeout(redirectTimeout); // Clear the timer if it's running
+            onTimesUp();
+        }
+        //Timer Code Ends
 
 
     </script>
