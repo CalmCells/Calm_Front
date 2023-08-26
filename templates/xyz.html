@@ -25,7 +25,7 @@
         }
 
         .top-navigation {
-            margin-bottom: 60px;
+            margin-bottom: 10px;
             margin-top: 40px;
         }
 
@@ -111,7 +111,7 @@
             width:300px;
             height:80px;
             height:80px;
-            top: 72%;
+            top: 75%;
             display:flex;
             flex-direction:column;
             align-items:center;
@@ -247,7 +247,7 @@
             align-items: center;
             gap: 10px;
             color: white;
-            margin-top: 10px;
+            margin-top: 20%;
             border: none;
             font-size: 14px;
             opacity: 0.6;
@@ -266,14 +266,14 @@
 
         /*Time CSS starts*/
 
-        #timer {
-            position: absolute;
-            top: 28%;
-        }
+       
         .base-timer {
-            position: relative;
+            position: fixed;
             width: 320px;
             height: 320px;
+            top:50%;
+            left:58%;
+            transform: translate(-60%, -50%);
         }
 
         .base-timer__svg {
@@ -313,7 +313,7 @@
         }
 
         .base-timer__label {
-            position: absolute;
+            position: fixed;
             width: 80px;
             height: 40px;
             top: 0;
@@ -321,10 +321,7 @@
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            position: fixed;
-            bottom: 10px;
-            top: 190px;
-            left:180px;
+            left:38%;
             color: #303133;
             background-color:white;
             padding:2px;
@@ -380,80 +377,174 @@
         }
 
         /*Error messages CSS ends*/
-
-        @media screen and (max-width:361px) {
-            .video {
-                top: 56%;
-                left: 54%;
-                width: 120px; /* Set the desired width of the image */
-                height: 140px;
+        /*Media Queries*/
+        @media screen and (max-width: 1280px) {
+            .top-navigation{
+                margin-bottom: 79px;
             }
         }
+            @media screen and (max-width: 1024px) {
+                .top-navigation {
+                    margin-bottom: -40px;
+                }
 
-        @media screen and (max-width:500px) {
-            .video {
-                top: 52%;
-                left: 54%;
-                width: 120px; /* Set the desired width of the image */
-                height: 140px;
-            }
-        }
+                .error-box {
+                    width: 348px;
+                    height: 50px;
+                }
 
-        @media screen and (max-width:650px) {
-            .video {
-                top: 50%;
-                left: 54%;
-                width: 120px; /* Set the desired width of the image */
-                height: 140px;
-            }
-        }
+                .main-error-message {
+                    margin-left: 653px;
+                    margin-top: -421px;
+                }
 
-        @media screen and (max-width:900px) {
-            .video {
-                top: 55%;
-                left: 56%;
-                width: 250px; /* Set the desired width of the image */
-                height: 250px;
+                .main-brightness-error {
+                    margin-left: 653px;
+                    margin-top: -525px;
+                }
             }
 
-            #timer {
-                height: 240px;
-                width: 240px;
-                font-size: 60px;
-                top: 28%;
+            @media screen and (max-width:912px) {
+                .top-navigation {
+                    margin-bottom: 392px;
+                }
+                .all-checkboxes{
+                    top:73%;
+                }
+
+                .video {
+                    top: 53%;
+                    left: 56%;
+                    width: 350px;
+                    height: 350px;
+                }
+
+                .base-timer {
+                    height: 370px;
+                    width: 370px;
+                    position: fixed;
+                    top: 53%;
+                }
+
+                .base-timer__label {
+                    width: 80px;
+                    height: 40px;
+                }
+
+                .main-error-message {
+                    margin-left: 4%;
+                }
+
+                .main-brightness-error {
+                    margin-left: 4%;
+                }
             }
-            .error-box {
-                width: 100vw;
-                height: 40px;
-                display:flex;
-                align-items:center;
-                padding:0;
-            
+
+            @media screen and (max-width:768px) {
+                .top-navigation {
+                    margin-bottom: 326px;
+                }
             }
-            .main-error-message {
-                margin-top: -586px;
-                margin-left: 0px;
+
+            @media screen and (max-width:540px) {
+                .top-navigation {
+                    margin-bottom: -24px;
+                }
+
+                .all-checkboxes {
+                    top: 72%;
+                }
+
+                .error-box {
+                    width: 100vw;
+                }
+
+                .main-error-message {
+                    margin-top: -566px;
+                }
+
+                .main-brightness-error {
+                    margin-top: -669px;
+                    margin-left: 0;
+                }
+
+                .video {
+                    top: 53%;
+                    left: 56%;
+                    width: 280px;
+                    height: 280px;
+                }
+
+                .base-timer {
+                    height: 300px;
+                    width: 300px;
+                    position: fixed;
+                    top: 53%;
+                }
             }
-            .main-brightness-error{
-                margin-top:-678px;
-                margin-left:0;
+
+            @media screen and (max-width:414px) {
+                .all-checkboxes {
+                    top: 67%;
+                }
             }
-            .main-brightness-error-inner{
-                margin:0;
+
+            @media screen and (max-width:394px) {
+                .all-checkboxes {
+                    top: 68%;
+                }
             }
-            .base-timer{
-                height:265px;
-                width:265px;
-                top:43%;
-                right:8%;
+
+            @media screen and (max-width:379px) {
+                .all-checkboxes {
+                    top: 72%;
+                }
             }
-            .base-timer__label {
-                top:337px;
-                left: 120px;
-                width:80px;
-                height:40px;
+
+            @media screen and (max-width:285px) {
+                h1{
+                    font-size: 26px;
+                }
+                .video-instructions{
+                    font-size:9px;
+                }
+                .main-container {
+                    left: 48%;
+                    top: 60%;
+                }
+
+                .top-navigation {
+                    margin-bottom: -95px;
+                }
+
+                .all-checkboxes {
+                    top: 68%;
+                }
+
+                .video {
+                    top: 53%;
+                    left: 56%;
+                    width: 200px;
+                    height: 200px;
+                }
+
+                .base-timer {
+                    height: 215px;
+                    width: 215px;
+                    position: fixed;
+                    top: 53%;
+                }
+
+                .error-box {
+                    height: 69px;
+                }
+
+                .main-brightness-error {
+                    top: 671px;
+                }
             }
-        }
+
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
@@ -465,7 +556,7 @@
         <!--Main Heading and Instructions-->
         <div class="top-navigation">
             <div class="top-navigation-mainpart">
-                <img class="arrow-back" src="./static/leftArrow.svg" alt="arrow-back" />
+                <!--<img class="arrow-back" src="./static/leftArrow.svg" alt="arrow-back" /-->
                 <h1>Stress Level Detector</h1>
             </div>
             <div class="video-instructions">Keep your face stable and near the camera</div>
@@ -502,6 +593,7 @@
         </label>
         </div>
         <!--Checkboxes Ends-->
+
         <!--Start Recording and Restart Recording Buttons-->
         <button class="btn" id="startRecordingBtn" onclick="startRecording()">START RECORDING</button>
 
@@ -1018,7 +1110,7 @@
             //clearTimeout(redirectTimeout); // Clear the timer if it's running
             onTimesUp();
         }
-        //Timer Code Ends
+        //Timer Code Endspt
 
 
     </script>
