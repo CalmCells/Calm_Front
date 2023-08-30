@@ -149,7 +149,7 @@ def base64_to_image(base64_string):
 
 @socketio.on("connect")
 def test_connect():
-    print("Connected")
+    #print("Connected")
 
     emit("my response", {"data": "Connected"})
 
@@ -236,7 +236,7 @@ def receive_image(image):
         # Emit the combined data to all connected clients using the 'data' event
         socketio.emit('data', combined_data)
 
-        print("--------------**********!!!!!!!!!!!!!This is the data",combined_data)
+        #print("--------------**********!!!!!!!!!!!!!This is the data",combined_data)
                 
 
         frame_resized = cv2.resize(frame, (640, 360))
@@ -267,14 +267,14 @@ def receive_image(image):
 
 @app.route("/")
 def index():
-    return render_template("xyz.html")
+    return render_template("index.html")
 
 
 
 @app.route('/results')
 def fshow_results():
 
-    return render_template('result2.html', stress_score=rizz[0], stress_level=rizz[1], calm_metrics=rizz[2], calm_features=rizz[3])
+    return render_template('results.html', stress_score=rizz[0], stress_level=rizz[1], calm_metrics=rizz[2], calm_features=rizz[3])
 # Add the Cache-Control header to all responses
 @app.after_request
 def add_cache_control(response):
