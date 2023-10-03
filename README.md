@@ -5,5 +5,5 @@
 
 # To Run the application
 1. pip install -r requirements.txt
-2. python flask.py
+2. python app.py
 3. Now navigate to the link http://127.0.0.1:5000/
